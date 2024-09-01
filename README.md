@@ -1,6 +1,7 @@
 # KRYSTAL: Knowledge Graph-based Framework for Tactical Attack Discovery in Audit Data
 ## What is Krystal?
 KRYSTAL is a modular framework for tactical attack discovery in audit data. The proposed framework integrates a variety of attack discovery mechanisms and takes advantage of its semantic model to include internal and external knowledge in the analysis.
+
 KRYSTAL 是一个用于在审计数据中发现战术攻击的模块化框架。该框架集成了多种攻击发现机制，并利用其语义模型将内部和外部知识纳入分析。
 ## Krystal Components
 
@@ -9,6 +10,7 @@ KRYSTAL 是一个用于在审计数据中发现战术攻击的模块化框架。
 Figure 1 gives an overview of the KRYSTAL attack discovery framework which consists of three main components, i.e., *(i) provenance graph building, (ii) threat detection and alerting, and (iii) attack graph and scenario reconstruction*. Each component may leverage background knowledge to contextualize, link, and enrich the graph over both internal and external cybersecurity information (e.g. IT Assets, Vulnerabilities, CTI, etc.)
 
 图 1 概述了 KRYSTAL 攻击发现框架，该框架由三个主要组件组成，即*(i) 来源图构建、(ii) 威胁检测和警报以及 (iii) 攻击图和场景重建*。每个组件都可以利用背景知识来情境化、链接和丰富内部和外部网络安全信息（例如 IT 资产、漏洞、CTI 等）的图表。
+
 KRYSTAL imports each log event (currently Audit Data) in sequence from potentially heterogeneous hosts (e.g., Linux, Windows, FreeBSD), i.e., in an online mode. It then generates an RDF-based provenance graph, taking advantage of the defined ontology (i.e. [Krystal Ontology](https://sepses.ifs.tuwien.ac.at/vocab/event/log/index-en.html)) and background knowledge (e.g. [SEPSES CS-KG](http://sepses.ifs.tuwien.ac.at/)) in the *"Provenance Graph Building"* module. Subsequently, several threat detection and alerting approaches can be applied to the provenance graphs in the *"Threat Detection and Alerting Module"*, including:
  (i) tag propagation, 
  (ii) attenuation & decay, and 
@@ -18,7 +20,13 @@ KRYSTAL imports each log event (currently Audit Data) in sequence from potential
  (ii) attack pattern matching via Graph Querying 
  over the provenance graph. 
 
-图 1 概述了 KRYSTAL 攻击发现框架，该框架由三个主要组件组成，即*(i) 来源图构建、(ii) 威胁检测和警报以及 (iii) 攻击图和场景重建*。每个组件都可以利用背景知识来情境化、链接和丰富内部和外部网络安全信息（例如 IT 资产、漏洞、CTI 等）的图表。
+KRYSTAL 以在线模式从可能异构的主机（例如 Linux、Windows、FreeBSD）按顺序导入每个日志事件（当前为审计数据）。然后，它会利用 *“起源图构建”* 模块中定义的本体（即 [Krystal Ontology](https://sepses.ifs.tuwien.ac.at/vocab/event/log/index-en.html)）和背景知识（例如 [SEPSES CS-KG](http://sepses.ifs.tuwien.ac.at/)）生成基于 RDF 的起源图。随后，可将多种威胁检测和警报方法应用于“威胁检测和警报模块”中的来源图，包括：
+(i) 标签传播，
+(ii) 衰减和衰减，以及
+(iii) 基于入侵指标 (IoC) 的基于签名的检测，例如通过 [Sigma 规则](https://github.com/SigmaHQ/sigma)。
+*“攻击图重建”* 模块随后通过多种图形构建技术促进（离线）攻击图生成，包括
+(i) 后向-前向链接和
+(ii) 通过对来源图进行图形查询进行攻击模式匹配。
 
 ## Requirements
 The Krystal Framework is built based on the Java Application Platform, hence, it requires a JVM. Please follow this [documentation](https://www.oracle.com/java/technologies/downloads/) to download and run the JVM.
