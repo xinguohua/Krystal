@@ -174,7 +174,7 @@ field-filter:
 To run the compiled project: 
 
 ```bash
-$ java -jar java -jar ./target/Krystal-1.1.0-jar-with-dependencies.jar
+$ java -jar ./target/Krystal-1.1.0-jar-with-dependencies.jar
 ```
 The log processing will take some time depending on the size of the input data. After processing the input data, several output files will be produced, such as the dependency (provenance) graphs (in RDF/.ttl files), the alert data (in RDF-star/.ttl), and the compressed version of the RDF graph (in .hdt). We provided several example RDF output files (in RDF and .HDT) under the directory [experiment/output](https://github.com/sepses/Krystal/tree/main/experiment/output). 
 

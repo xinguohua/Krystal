@@ -5,6 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
+import java.nio.file.Paths;
+import java.util.Arrays;
 
 public enum GraphDBStorage implements Storage {
 
@@ -26,10 +28,16 @@ public enum GraphDBStorage implements Storage {
             }
 
             long start = System.currentTimeMillis() / 1000;
-           
-            String command = "curl -X PUT -H \"Content-Type:application/x-turtle\" -T "+file+"  -G --data-urlencode \"graph="+namegraph+"\" "+endpoint+"/rdf-graphs/service";
-            	
-            //System.out.println(command);
+
+            //curl -X PUT -H "Content-Type:application/x-turtle" -T experiment/ontology/log-ontology.ttl "http://localhost:7200/repositories/Krystal/rdf-graphs/service?graph=http://w3id.org/sepses/graph/cadets"
+            String[] command = {
+                    "curl",
+                    "-X", "PUT",
+                    "-H", "Content-Type:application/x-turtle",
+                    "-T",  file,
+                    String.format("%s/rdf-graphs/service?graph=%s", endpoint, namegraph)
+            };
+            System.out.println(Arrays.toString(command));
             Process process = Runtime.getRuntime().exec(command);
             InputStream is = process.getInputStream();
             IOUtils.copy(is, System.out);
