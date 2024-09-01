@@ -1,3 +1,18 @@
+==== search key word
+PREFIX sepses: <http://w3id.org/sepses/resource/>
+
+SELECT ?s ?p ?o
+WHERE {
+  {
+    ?s ?p ?o .
+#    FILTER (CONTAINS(STR(?s), "pEja72mA") || CONTAINS(STR(?o), "pEja72mA"))
+#      FILTER (CONTAINS(STR(?s), "1040") || CONTAINS(STR(?o), "1040"))
+#     FILTER (CONTAINS(STR(?s), "53.158") || CONTAINS(STR(?o), "53.158"))
+}
+}
+LIMIT 100
+
+==============================================
 PREFIX darpa: <http://ss.l/dp#>
    CONSTRUCT {?s ?p ?o.}
      WHERE {  

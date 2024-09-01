@@ -31,12 +31,14 @@ Krystal 框架基于 Java 应用平台构建，因此需要 JVM。请按照此 [
 ## Dataset for Testing and Evaluation
 Krystal currently only supports audit data, in particular we demonstrate it on the adversarial engagements produced as part of the third Transparent Computing (TC) program organized by [DARPA](https://drive.google.com/drive/folders/1QlbUFWAGq3Hpl8wVdzOdIoZLFxkII4EK). The datasets are organized into five categories, namely Cadets, Trace, Theia, FiveDirections, and ClearScope. We include several examples of the dataset under the directory [experiment/input](https://github.com/sepses/Krystal/tree/main/experiment/input).
 
+
 Krystal 目前仅支持审计数据，具体来说，我们在 [DARPA](https://drive.google.com/drive/folders/1QlbUFWAGq3Hpl8wVdzOdIoZLFxkII4EK) 组织的第三次透明计算 (TC) 计划中产生的对抗性交战中展示了它。数据集分为五类，即 Cadets、Trace、Theia、FiveDirections 和 ClearScope。我们在目录 [experiment/input](https://github.com/sepses/Krystal/tree/main/experiment/input) 下包含了数据集的几个示例。
 ## Installation and Configuration
 
 ## Installation
 
 This project can be set up by cloning and installing and running it as follows:
+
 可以通过克隆、安装并运行来设置该项目，如下所示：
 ```bash
 $ git clone https://github.com/sepses/Krystal.git
@@ -46,6 +48,7 @@ $ mvn clean install
 
 ### Configuration
 In the following, we show configuration options with some explanations. Take a look at ([config.yaml](https://github.com/sepses/Krystal/blob/main/config.yaml)). 
+
 
 下面，我们展示一些配置选项并进行解释。请查看 ([config.yaml](https://github.com/sepses/Krystal/blob/main/config.yaml))
 ```bash
