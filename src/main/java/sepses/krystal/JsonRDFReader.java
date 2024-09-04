@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -86,19 +88,19 @@ public class JsonRDFReader {
 		ArrayList<String> listFiles = Utility.listFilesForFolder(folder);
 		Collections.sort(listFiles);
 		
-		 if (listFiles.size()==0) { System.out.print("folder is empty!"); System.exit(0);}
+		 if (listFiles.isEmpty()) { System.out.print("folder is empty!"); System.exit(0);}
 	     for (String file : listFiles) {
 	    	 	System.out.println("processing file: "+file);
 	    	 	String filename = filefolder+file;
 	
-			InputStream jf = new FileInputStream(filename);
+			InputStream jf = Files.newInputStream(Paths.get(filename));
 			BufferedReader in = new BufferedReader(new InputStreamReader(jf));	
 		
 					while (in.ready()) {
 						String line = in.readLine();
 						if (countLine.equals(startingLine)) {
 							System.out.println("reading from line : "+ startingLine);
-								group=((int) Math.ceil((startingLine-1)/lineNumber));
+							group=((int) Math.ceil((startingLine-1)/lineNumber));
 						}
 						if(countLine >= startingLine) {
 							//line = cleanLine(line); // sometimes the data should be cleaned first
