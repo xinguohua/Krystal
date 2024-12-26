@@ -14,8 +14,7 @@ public class Statistic {
 		String query = "PREFIX rule: <http://w3id.org/sepses/vocab/rule#>\r\n" + 
 				"select ?alert (count(?triple) as ?count) where { \r\n" + 
 				"    ?triple rule:hasDetectedRule ?alert;\r\n" + 
-				"} group by ?alert\r\n" + 
-				"";
+				"} group by ?alert\r\n";
 		
 		QueryExecution qe = QueryExecutionFactory.create(query, alertModel);
         ResultSet rs = qe.execSelect();

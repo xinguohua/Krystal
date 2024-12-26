@@ -62,11 +62,12 @@ public class LogParserUbuntu14 {
             String mapper = "";
             LogMapper lm = new LogMapper();
             subjectId = shortenUUID(eventNode.get("subject").get("com.bbn.tc.schema.avro.cdm18.UUID").toString(), uuIndex);
+            objectUUID = shortenUUID(eventNode.get("predicateObject").get("com.bbn.tc.schema.avro.cdm18.UUID").toString(), uuIndex);
+            objectAbsPath = cleanLine(eventNode.get("predicateObjectPath").get("string").toString());
+
             exec = getSubjectCmd(subjectId, subject2Cmd);
             hostId = eventNode.get("hostId").toString();
             userId = getUserId(subjectId, subject2User);
-            objectAbsPath = cleanLine(eventNode.get("predicateObjectPath").get("string").toString());
-            objectUUID = shortenUUID(eventNode.get("predicateObject").get("com.bbn.tc.schema.avro.cdm18.UUID").toString(), uuIndex);
 
             long ts = eventNode.get("timestampNanos").toLong();
             String timestamp = eventNode.get("timestampNanos").toString();

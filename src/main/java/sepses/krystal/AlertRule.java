@@ -257,48 +257,48 @@ public class AlertRule {
         alertModel.add(currentAlert);
 	    
 	}
-	
-	
+
+
 	public static void generateAlertFromRuleDir(Model jsonModel, Model alertModel, String ruledir) {
-		System.out.println("generate alert from sigma rule "+ruledir);
-		
+		System.out.println("generate alert from sigma rule " + ruledir);
+
 		//get rule-query from ruledir
 		File rulefolder = new File(ruledir);
 		Model ruleModel = ModelFactory.createDefaultModel();
 		ArrayList<String> listFiles = Utility.listFilesForFolder(rulefolder);
 		Collections.sort(listFiles);
-		for(int i=0;i<listFiles.size();i++) {
-			Model temprule = RDFDataMgr.loadModel(ruledir+listFiles.get(i));
+		for (String listFile : listFiles) {
+			Model temprule = RDFDataMgr.loadModel(ruledir + listFile);
 			ruleModel.add(temprule);
 		}
-		
+
 		Property hasDetection = ruleModel.createProperty("http://w3id.org/sepses/vocab/rule/sigma#hasDetection");
-		StmtIterator iter = ruleModel.listStatements((Resource) null, hasDetection,(RDFNode) null);
-		
-		 while (iter.hasNext()) {
-			 Statement s = iter.next();
-			 Resource subj = s.getSubject();
-			 String ruleQuery = s.getObject().asLiteral().toString().replace("\\\"","\"");
-			 if(ruledir.contains("rule_win")) {
-				 ruleQuery = ruleQuery.replace("\\\\","\\\\\\\\");
-			 }
-			 
-				//apply (iteratively) rule query from infModel
-			 if(!ruleQuery.isEmpty()) {
-				 Query rq = QueryFactory.create(ruleQuery);
-			     QueryExecution qe = QueryExecutionFactory.create(rq, jsonModel);
-		         ResultSet qres = qe.execSelect();
-		         
-		       //add detection triple to infModel while matching
-		         while (qres.hasNext()) {
-			            QuerySolution qs = qres.nextSolution();
-			            Resource res = qs.get("?s").asResource();
-			            Property detectedRule = ruleModel.createProperty("http://w3id.org/sepses/vocab/rule#hasDetectedRule");
-			            alertModel.add(res, detectedRule, subj);
-			    	  }
-		            }
-			   }
-			
-			 
-		  }
+		StmtIterator iter = ruleModel.listStatements((Resource) null, hasDetection, (RDFNode) null);
+
+		while (iter.hasNext()) {
+			Statement s = iter.next();
+			Resource subj = s.getSubject();
+			String ruleQuery = s.getObject().asLiteral().toString().replace("\\\"", "\"");
+			if (ruledir.contains("rule_win")) {
+				ruleQuery = ruleQuery.replace("\\\\", "\\\\\\\\");
+			}
+
+			//apply (iteratively) rule query from infModel
+			if (!ruleQuery.isEmpty()) {
+				Query rq = QueryFactory.create(ruleQuery);
+				QueryExecution qe = QueryExecutionFactory.create(rq, jsonModel);
+				ResultSet qres = qe.execSelect();
+
+				//add detection triple to infModel while matching
+				while (qres.hasNext()) {
+					QuerySolution qs = qres.nextSolution();
+					Resource res = qs.get("?s").asResource();
+					Property detectedRule = ruleModel.createProperty("http://w3id.org/sepses/vocab/rule#hasDetectedRule");
+					alertModel.add(res, detectedRule, subj);
+				}
+			}
+		}
+
+
+	}
 }
