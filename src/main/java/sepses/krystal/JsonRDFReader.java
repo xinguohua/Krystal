@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.jena.atlas.lib.Alarm;
 import org.apache.jena.query.Dataset;
@@ -80,6 +81,8 @@ public class JsonRDFReader {
 		HashMap<String, String> RegistryObject = new HashMap<>();
 		ArrayList<Integer> counter = new ArrayList<>();
 		counter.add(0);
+		AtomicInteger counter1 = new AtomicInteger();
+		counter1.set(0);
 		String lastAccess = "";
 		
 		
@@ -121,7 +124,7 @@ public class JsonRDFReader {
 									}else  if (os.equals("ubuntu14")){
 										LogParserUbuntu14 lp = new LogParserUbuntu14(line); //freebsd
 										lastAccess = lp.parseJSONtoRDF(jsonModel,alertModel,fieldfilter, confidentialdir, uuIndex, Process, File, 
-								                  Network, NetworkObject, ForkObject, lastEvent, lastAccess, UserObject, SubjectTime, propagation, attenuation, ab,ae , decayrule, period, tb,te, policyrule, signaturerule, counter, SubjectCmd);
+								                  Network, NetworkObject, ForkObject, lastEvent, lastAccess, UserObject, SubjectTime, propagation, attenuation, ab,ae , decayrule, period, tb,te, policyrule, signaturerule, counter1, SubjectCmd);
 									}else {
 										LogParserFreeBSD lp = new LogParserFreeBSD(line); //freebsd
 										lastAccess = lp.parseJSONtoRDF(jsonModel,alertModel,fieldfilter, confidentialdir, uuIndex, Process, File, 

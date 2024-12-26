@@ -6,11 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="a36892f7-ff5c-4204-bdef-0536b555116e" name="Changes" comment="modify">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sepses/krystal/AlertRule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sepses/krystal/AlertRule.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/sepses/krystal/JsonRDFReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sepses/krystal/JsonRDFReader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sepses/krystal/PropagationRule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sepses/krystal/PropagationRule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserFreeBSD.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserFreeBSD.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -90,7 +86,7 @@
       <workItem from="1725160878717" duration="58000" />
       <workItem from="1725160940770" duration="46959000" />
       <workItem from="1725455410705" duration="736000" />
-      <workItem from="1734956553182" duration="83492000" />
+      <workItem from="1734956553182" duration="93925000" />
     </task>
     <task id="LOCAL-00001" summary="modify">
       <option name="closed" value="true" />
@@ -132,7 +128,15 @@
       <option name="project" value="LOCAL" />
       <updated>1725434640701</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="modify">
+      <option name="closed" value="true" />
+      <created>1735183068675</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1735183068675</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -188,7 +192,7 @@
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/JsonRDFReader.java</url>
-          <line>42</line>
+          <line>43</line>
           <option name="timeStamp" value="15" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
@@ -198,68 +202,78 @@
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java</url>
-          <line>58</line>
-          <option name="timeStamp" value="18" />
-        </line-breakpoint>
-        <line-breakpoint type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java</url>
-          <line>116</line>
+          <line>121</line>
           <option name="timeStamp" value="19" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java</url>
-          <line>141</line>
+          <line>146</line>
           <option name="timeStamp" value="20" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java</url>
-          <line>158</line>
-          <option name="timeStamp" value="21" />
-        </line-breakpoint>
-        <line-breakpoint type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java</url>
-          <line>208</line>
+          <line>213</line>
           <option name="timeStamp" value="22" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java</url>
-          <line>214</line>
+          <line>219</line>
           <option name="timeStamp" value="23" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java</url>
-          <line>128</line>
+          <line>133</line>
           <option name="timeStamp" value="25" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java</url>
-          <line>134</line>
+          <line>139</line>
           <option name="timeStamp" value="26" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java</url>
-          <line>152</line>
+          <line>157</line>
           <option name="timeStamp" value="27" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java</url>
-          <line>205</line>
+          <line>210</line>
           <option name="timeStamp" value="28" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java</url>
-          <line>222</line>
+          <line>227</line>
           <option name="timeStamp" value="29" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java</url>
-          <line>300</line>
+          <line>303</line>
           <option name="timeStamp" value="31" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java</url>
-          <line>301</line>
-          <option name="timeStamp" value="33" />
+          <line>163</line>
+          <option name="timeStamp" value="34" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java</url>
+          <line>180</line>
+          <option name="timeStamp" value="35" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java</url>
+          <line>232</line>
+          <option name="timeStamp" value="36" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java</url>
+          <line>218</line>
+          <option name="timeStamp" value="37" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java</url>
+          <line>63</line>
+          <option name="timeStamp" value="38" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
