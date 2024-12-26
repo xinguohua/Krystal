@@ -44,7 +44,7 @@ public class JsonRDFReader {
 		if(l!=null) {lineNumber=Integer.parseInt(l);}
 		String sparqlEp = se;
 		String namegraph = ng;
-		Integer startingLine = 1; // 1 means start from the beginning
+		int startingLine = 1; // 1 means start from the beginning
 		if(sl!=null) {startingLine=Integer.parseInt(sl);}
 		
 		// create in one json object
@@ -69,16 +69,16 @@ public class JsonRDFReader {
 		Set<String> Registry = new HashSet<>();
 		Set<String> lastEvent = new HashSet<>();
 
-		HashMap<String, String> uuIndex = new HashMap<String, String>();
-		HashMap<String, String> NetworkObject = new HashMap<String, String>();
-		HashMap<String, String> FileObject = new HashMap<String, String>();
-		HashMap<String, String> ForkObject = new HashMap<String, String>();
-		HashMap<String, String> UserObject = new HashMap<String, String>();
-		HashMap<String, String> SubjectCmd = new HashMap<String, String>();
-		HashMap<String, Long> SubjectTime = new HashMap<String, Long>();
-		HashMap<String, String> CloneObject = new HashMap<String, String>();
-		HashMap<String, String> RegistryObject = new HashMap<String, String>();
-		ArrayList<Integer> counter = new ArrayList<Integer>(); 
+		HashMap<String, String> uuIndex = new HashMap<>();
+		HashMap<String, String> NetworkObject = new HashMap<>();
+		HashMap<String, String> FileObject = new HashMap<>();
+		HashMap<String, String> ForkObject = new HashMap<>();
+		HashMap<String, String> UserObject = new HashMap<>();
+		HashMap<String, String> SubjectCmd = new HashMap<>();
+		HashMap<String, Long> SubjectTime = new HashMap<>();
+		HashMap<String, String> CloneObject = new HashMap<>();
+		HashMap<String, String> RegistryObject = new HashMap<>();
+		ArrayList<Integer> counter = new ArrayList<>();
 		counter.add(0);
 		String lastAccess = "";
 		

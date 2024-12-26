@@ -5,8 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a36892f7-ff5c-4204-bdef-0536b555116e" name="Changes" comment="modify">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiment/query/forwardAnalysis.sparql" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/query/forwardAnalysis.sparql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sepses/krystal/AlertRule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sepses/krystal/AlertRule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sepses/krystal/JsonRDFReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sepses/krystal/JsonRDFReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sepses/krystal/PropagationRule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sepses/krystal/PropagationRule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserFreeBSD.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserFreeBSD.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,6 +20,10 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://$MAVEN_REPOSITORY$/org/apache/jena/jena-core/3.17.0/jena-core-3.17.0-sources.jar!/org/apache/jena/rdf/model/Model.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$MAVEN_REPOSITORY$/org/apache/jena/jena-core/3.17.0/jena-core-3.17.0-sources.jar!/org/apache/jena/rdf/model/ModelCon.java" root0="SKIP_INSPECTION" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -27,25 +36,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Users/xinguohua/Code/Krystal",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.17",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "project.propVCSSupport.Mappings",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/xinguohua/Code/Krystal&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.Mappings&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="ALTERNATIVE_JRE_PATH" value="adopt-1.8" />
@@ -79,7 +88,9 @@
       <workItem from="1725091482927" duration="643000" />
       <workItem from="1725094744360" duration="12615000" />
       <workItem from="1725160878717" duration="58000" />
-      <workItem from="1725160940770" duration="18942000" />
+      <workItem from="1725160940770" duration="46959000" />
+      <workItem from="1725455410705" duration="736000" />
+      <workItem from="1734956553182" duration="83492000" />
     </task>
     <task id="LOCAL-00001" summary="modify">
       <option name="closed" value="true" />
@@ -89,7 +100,39 @@
       <option name="project" value="LOCAL" />
       <updated>1725178575359</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="modify">
+      <option name="closed" value="true" />
+      <created>1725201370588</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1725201370588</updated>
+    </task>
+    <task id="LOCAL-00003" summary="modify">
+      <option name="closed" value="true" />
+      <created>1725201448640</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1725201448640</updated>
+    </task>
+    <task id="LOCAL-00004" summary="modify">
+      <option name="closed" value="true" />
+      <created>1725375637811</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1725375637811</updated>
+    </task>
+    <task id="LOCAL-00005" summary="modify">
+      <option name="closed" value="true" />
+      <created>1725434640701</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1725434640701</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -113,15 +156,110 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/helper/Utility.java</url>
           <line>174</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/helper/GraphDBStorage.java</url>
           <line>66</line>
           <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/Main.java</url>
+          <line>43</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogMapper.java</url>
+          <line>75</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu12.java</url>
+          <line>50</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/Main.java</url>
+          <line>121</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/JsonRDFReader.java</url>
+          <line>42</line>
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserFreeBSD.java</url>
+          <line>43</line>
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java</url>
+          <line>58</line>
+          <option name="timeStamp" value="18" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java</url>
+          <line>116</line>
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java</url>
+          <line>141</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java</url>
+          <line>158</line>
+          <option name="timeStamp" value="21" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java</url>
+          <line>208</line>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java</url>
+          <line>214</line>
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java</url>
+          <line>128</line>
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java</url>
+          <line>134</line>
+          <option name="timeStamp" value="26" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java</url>
+          <line>152</line>
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java</url>
+          <line>205</line>
+          <option name="timeStamp" value="28" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java</url>
+          <line>222</line>
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java</url>
+          <line>300</line>
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/sepses/krystal/parser/LogParserUbuntu14.java</url>
+          <line>301</line>
+          <option name="timeStamp" value="33" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

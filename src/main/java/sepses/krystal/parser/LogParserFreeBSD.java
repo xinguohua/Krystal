@@ -38,17 +38,17 @@ public class LogParserFreeBSD {
 			Any jsonNode=JsonIterator.deserialize(line);
 			datumNode = jsonNode.get("datum");
 	}
-	
-	public String parseJSONtoRDF(Model jsonModel, Model alertModel, ArrayList<String> fieldfilter, ArrayList<String> confidentialdir, HashMap<String, String> uuIndex, Set<String> Process, Set<String> File, Set<String> Network, HashMap<String, String> NetworkObject, HashMap<String, String> ForkObject , Set<String> lastEvent, String lastAccess, HashMap<String, String> UserObject, HashMap<String, Long> SubjectTime, String propagation, String attenuation,double ab, double ae, String decayrule, double period, double tb, double te,String policyrule, String signaturerule, ArrayList<Integer> counter) throws IOException{	
+
+	public String parseJSONtoRDF(Model jsonModel, Model alertModel, ArrayList<String> fieldfilter, ArrayList<String> confidentialdir, HashMap<String, String> uuIndex, Set<String> Process, Set<String> File, Set<String> Network, HashMap<String, String> NetworkObject, HashMap<String, String> ForkObject, Set<String> lastEvent, String lastAccess, HashMap<String, String> UserObject, HashMap<String, Long> SubjectTime, String propagation, String attenuation, double ab, double ae, String decayrule, double period, double tb, double te, String policyrule, String signaturerule, ArrayList<Integer> counter) throws IOException {
 		//filter is the line is an event or not
 		eventNode = datumNode.get("com.bbn.tc.schema.avro.cdm18.Event");
-		if(eventNode.toBoolean()) {
+		if (eventNode.toBoolean()) {
 			updateCounter(counter);
 			eventType = eventNode.toString();
-			if(!filterLine(eventType, fieldfilter)){
+			if (!filterLine(eventType, fieldfilter)) {
 				String mapper = "";
-				LogMapper lm = new LogMapper();	
-				subject = shortenUUID(eventNode.get("subject").get("com.bbn.tc.schema.avro.cdm18.UUID").toString(),uuIndex);
+				LogMapper lm = new LogMapper();
+				subject = shortenUUID(eventNode.get("subject").get("com.bbn.tc.schema.avro.cdm18.UUID").toString(), uuIndex);
 				exec = eventNode.get("properties").get("map").get("exec").toString();
 				hostId = eventNode.get("hostId").toString();
 				long ts = eventNode.get("timestampNanos").toLong();
@@ -56,204 +56,198 @@ public class LogParserFreeBSD {
 				//String strTime = new Timestamp(ts/1000000).toString();
 				String timestamp = eventNode.get("timestampNanos").toString();
 				long stime = getSubjectTime(subject, SubjectTime);
-				
+
 				PropagationRule prop = new PropagationRule();
 				//time initialization for each process
-				if(stime!=0) {
+				if (stime != 0) {
 					prop.putProcessTime(jsonModel, subject, exec, stime);
-				}else {
+				} else {
 					putNewSubjectTime(subject, ts, SubjectTime);
 					long nstime = getSubjectTime(subject, SubjectTime);
 					prop.putProcessTime(jsonModel, subject, exec, nstime);
 				}
-			
-				
-				
+
+
 				userId = getUserId(subject, UserObject);
-				objectString = cleanLine(eventNode.get("predicateObjectPath").get("string").toString());	
-				object = shortenUUID(eventNode.get("predicateObject").get("com.bbn.tc.schema.avro.cdm18.UUID").toString(),uuIndex);
+				objectString = cleanLine(eventNode.get("predicateObjectPath").get("string").toString());
+				object = shortenUUID(eventNode.get("predicateObject").get("com.bbn.tc.schema.avro.cdm18.UUID").toString(), uuIndex);
 				String processMap = "";
 				String fileMap = "";
-				String prevProcess="";
-				String networkMap="";
-				
-				
-				if(decayrule!="false") {
-					if(ts!=0 && !eventType.contains("EVENT_FORK")){
-						prop.decayIndividualProcess(jsonModel,  subject+"#"+exec, ts, period, tb, te);
+				String prevProcess = "";
+				String networkMap = "";
+
+
+				if (decayrule != "false") {
+					if (ts != 0 && !eventType.contains("EVENT_FORK")) {
+						prop.decayIndividualProcess(jsonModel, subject + "#" + exec, ts, period, tb, te);
 					}
 				}
-				
+
 				//is file new
-				if(isEntityNew(objectString, File)) {
+				if (isEntityNew(objectString, File)) {
 					//is file confidential
-					if(isConfidentialFile(objectString, confidentialdir)) {
-						fileMap = lm.initialConfFileTagMap(objectString);	
-					}else {
-					    fileMap = lm.initialFileTagMap(objectString);
+					if (isConfidentialFile(objectString, confidentialdir)) {
+						fileMap = lm.initialConfFileTagMap(objectString);
+					} else {
+						fileMap = lm.initialFileTagMap(objectString);
 					}
-					
 				}
-				
-				
+
+
 				//is process new
-				if(isEntityNew(subject+"#"+exec, Process)) {
-					
+				if (isEntityNew(subject + "#" + exec, Process)) {
 					//is it forked by another previous process? 
 					prevProcess = getPreviousForkProcess(subject, ForkObject);
-						//if yes create fork Event
-						if(!prevProcess.isEmpty()) {
-							if(!eventType.contains("EVENT_EXECUTE")) {
-  							    forkEvent(lm, prevProcess, subject+"#"+exec,timestamp, jsonModel);
-							}
-						}else {
-	                       //tag new process
-							processMap = lm.initialProcessTagMap(subject+"#"+exec);
+					//if yes create fork Event
+					if (!prevProcess.isEmpty()) {
+						if (!eventType.contains("EVENT_EXECUTE")) {
+							forkEvent(lm, prevProcess, subject + "#" + exec, timestamp, jsonModel);
 						}
-					
+					} else {
+						//tag new process
+						processMap = lm.initialProcessTagMap(subject + "#" + exec);
+					}
 				}
-				
-				  if(eventType.contains("EVENT_WRITE")) {
-					  
-						if(objectString!="" && !objectString.contains("<unknown>")) {
-							String curWrite = subject+exec+objectString+"write";
-							if	(!lastAccess.contains(curWrite)) {				
-						
-								 mapper = lm.writeMap(subject,exec,objectString,hostId,userId, timestamp)+fileMap+processMap;
-								
-								storeEntity(objectString, File);
-								storeEntity(subject+"#"+exec, Process);
-						
-								Reader targetReader = new StringReader(mapper);
-								jsonModel.read(targetReader, null, "N-TRIPLE");
-								
-								
-								if(policyrule!="false") {
-									AlertRule alert = new AlertRule();
-									alert.corruptFileAlert(jsonModel, alertModel, subject+"#"+exec, objectString, sts);
-								}
-								
-								if(attenuation!="false") {
-									prop.writeTagWithAttenuation(jsonModel, subject, exec, objectString,ab,ae, propagation);
-								}else {
-									prop.writeTag(jsonModel, subject, exec, objectString, propagation);
-								}
-								
-								lastAccess = curWrite;
-								
-							}
-					  }
-					  
-					}else if(eventType.contains("EVENT_READ")) {
-					
-						//check last read to reduce unnecessary duplicate event processing			
-						String curRead = subject+exec+objectString+"read";
-							if(objectString!="" && !objectString.contains("<unknown>")) {
-								if	(!lastAccess.contains(curRead)) {
-									mapper = lm.readMap(subject,exec,objectString,hostId,userId,timestamp)+fileMap+processMap;
-						
-									storeEntity(objectString, File);
-									storeEntity(subject+"#"+exec, Process);
-									
-									Reader targetReader = new StringReader(mapper);
-									jsonModel.read(targetReader, null, "N-TRIPLE");
-									
-					
-									prop.readTag(jsonModel, subject, exec, objectString, propagation);
-									lastAccess = curRead;
-									
-								}
-							}
-					
-					}else if(eventType.contains("EVENT_EXECUTE")) {	
-						
-						 cmdline = eventNode.get("properties").get("map").get("cmdLine").toString();
-						 cmdline = cleanCmd(cmdline);
-						 
-						 String process2 = "";
-						 
-						 if(!cmdline.isEmpty() || cmdline!=null) {
-							    if(cmdline.contains(" ")) {
-									String newproc = cmdline.substring(0,cmdline.indexOf(" "));
-										String[] nnewproc = newproc.split("/"); //incase there is full path e.g. "/tmp/vUgefal"
-										if(nnewproc.length>1) {
-											process2 = nnewproc[nnewproc.length-1];
-										}else {
-											process2 = newproc;
-										}
-									}else {
-										process2 = cmdline;
-									}
-							}
 
-						 if(!process2.isEmpty()) {
-							
-							 if(prevProcess.isEmpty()) {
-								 putNewForkObject(subject+"#"+exec, subject, ForkObject);
-								 prevProcess = getPreviousForkProcess(subject, ForkObject);
-							 }
-							 
-							    Reader targetReader = new StringReader(processMap);
-							 	jsonModel.read(targetReader, null, "N-TRIPLE");
-							 	
-							 	
-								forkEvent(lm, prevProcess, subject+"#"+process2, timestamp, jsonModel);
-							 
-								
-								 mapper = lm.executeMap(subject,process2, objectString, cmdline, hostId, userId, timestamp)+fileMap;
-								 
-								 storeEntity(objectString, File);
-								 storeEntity(subject+"#"+exec, Process);
-								 storeEntity(subject+"#"+process2, Process);
-								 
-								 Reader targetReader2 = new StringReader(mapper);
-								 jsonModel.read(targetReader2, null, "N-TRIPLE");
-								 
-								 if(stime!=0) {
-										prop.putProcessTime(jsonModel, subject, process2, stime);
-								}
-									if(decayrule!="false") {
-									  prop.decayIndividualProcess(jsonModel,  subject+"#"+process2, ts, period, tb, te);
-									}
-									
-								 
-									if(policyrule!="false") {
-										AlertRule alert = new AlertRule();
-										alert.execAlert(jsonModel,alertModel, subject+"#"+process2, objectString, sts);
-								}
-								 
-								 prop.execTag(jsonModel, subject, process2, objectString, propagation);
-						}	 
-						 
-					
-					}else if(eventType.contains("EVENT_FORK")) {
-					
-						putNewForkObject(subject+"#"+exec, object, ForkObject);
-						
-						storeEntity(subject+"#"+exec, Process);
-						
-						Reader targetReader = new StringReader(processMap);
-						jsonModel.read(targetReader, null, "N-TRIPLE");
-						 
-						
-						
-					}else if(eventType.contains("EVENT_MODIFY_FILE_ATTRIBUTES")) {
-						String curCh = subject+exec+objectString+"change";
-						if	(!lastAccess.contains(curCh)) {				
+				if (eventType.contains("EVENT_WRITE")) {
+					if (objectString != "" && !objectString.contains("<unknown>")) {
+						String curWrite = subject + exec + objectString + "write";
+						if (!lastAccess.contains(curWrite)) {
 
-							mapper = lm.changePerm(subject,exec,objectString,hostId,userId, timestamp);
-								
+							mapper = lm.writeMap(subject, exec, objectString, hostId, userId, timestamp) + fileMap + processMap;
+
+							storeEntity(objectString, File);
+							storeEntity(subject + "#" + exec, Process);
+
 							Reader targetReader = new StringReader(mapper);
 							jsonModel.read(targetReader, null, "N-TRIPLE");
-							
-							if(policyrule!="false") {
-								 AlertRule alert = new AlertRule();
-								 alert.changePermAlert(jsonModel, alertModel, subject+"#"+exec, objectString, sts);
+
+
+							if (policyrule != "false") {
+								AlertRule alert = new AlertRule();
+								alert.corruptFileAlert(jsonModel, alertModel, subject + "#" + exec, objectString, sts);
 							}
-							lastAccess = curCh;
-								
+
+							if (attenuation != "false") {
+								prop.writeTagWithAttenuation(jsonModel, subject, exec, objectString, ab, ae, propagation);
+							} else {
+								prop.writeTag(jsonModel, subject, exec, objectString, propagation);
+							}
+
+							lastAccess = curWrite;
+
 						}
-						
+					}
+
+				} else if (eventType.contains("EVENT_READ")) {
+
+					//check last read to reduce unnecessary duplicate event processing
+					String curRead = subject + exec + objectString + "read";
+					if (objectString != "" && !objectString.contains("<unknown>")) {
+						if (!lastAccess.contains(curRead)) {
+							mapper = lm.readMap(subject, exec, objectString, hostId, userId, timestamp) + fileMap + processMap;
+
+							storeEntity(objectString, File);
+							storeEntity(subject + "#" + exec, Process);
+
+							Reader targetReader = new StringReader(mapper);
+							jsonModel.read(targetReader, null, "N-TRIPLE");
+
+
+							prop.readTag(jsonModel, subject, exec, objectString, propagation);
+							lastAccess = curRead;
+
+						}
+					}
+
+				} else if (eventType.contains("EVENT_EXECUTE")) {
+
+					cmdline = eventNode.get("properties").get("map").get("cmdLine").toString();
+					cmdline = cleanCmd(cmdline);
+
+					String process2 = "";
+
+					if (!cmdline.isEmpty() || cmdline != null) {
+						if (cmdline.contains(" ")) {
+							String newproc = cmdline.substring(0, cmdline.indexOf(" "));
+							String[] nnewproc = newproc.split("/"); //incase there is full path e.g. "/tmp/vUgefal"
+							if (nnewproc.length > 1) {
+								process2 = nnewproc[nnewproc.length - 1];
+							} else {
+								process2 = newproc;
+							}
+						} else {
+							process2 = cmdline;
+						}
+					}
+
+					if (!process2.isEmpty()) {
+
+						if (prevProcess.isEmpty()) {
+							putNewForkObject(subject + "#" + exec, subject, ForkObject);
+							prevProcess = getPreviousForkProcess(subject, ForkObject);
+						}
+
+						Reader targetReader = new StringReader(processMap);
+						jsonModel.read(targetReader, null, "N-TRIPLE");
+
+
+						forkEvent(lm, prevProcess, subject + "#" + process2, timestamp, jsonModel);
+
+
+						mapper = lm.executeMap(subject, process2, objectString, cmdline, hostId, userId, timestamp) + fileMap;
+
+						storeEntity(objectString, File);
+						storeEntity(subject + "#" + exec, Process);
+						storeEntity(subject + "#" + process2, Process);
+
+						Reader targetReader2 = new StringReader(mapper);
+						jsonModel.read(targetReader2, null, "N-TRIPLE");
+
+						if (stime != 0) {
+							prop.putProcessTime(jsonModel, subject, process2, stime);
+						}
+						if (decayrule != "false") {
+							prop.decayIndividualProcess(jsonModel, subject + "#" + process2, ts, period, tb, te);
+						}
+
+
+						if (policyrule != "false") {
+							AlertRule alert = new AlertRule();
+							alert.execAlert(jsonModel, alertModel, subject + "#" + process2, objectString, sts);
+						}
+
+						prop.execTag(jsonModel, subject, process2, objectString, propagation);
+					}
+
+
+				} else if (eventType.contains("EVENT_FORK")) {
+
+					putNewForkObject(subject + "#" + exec, object, ForkObject);
+
+					storeEntity(subject + "#" + exec, Process);
+
+					Reader targetReader = new StringReader(processMap);
+					jsonModel.read(targetReader, null, "N-TRIPLE");
+
+
+				} else if (eventType.contains("EVENT_MODIFY_FILE_ATTRIBUTES")) {
+					String curCh = subject + exec + objectString + "change";
+					if (!lastAccess.contains(curCh)) {
+
+						mapper = lm.changePerm(subject, exec, objectString, hostId, userId, timestamp);
+
+						Reader targetReader = new StringReader(mapper);
+						jsonModel.read(targetReader, null, "N-TRIPLE");
+
+						if (policyrule != "false") {
+							AlertRule alert = new AlertRule();
+							alert.changePermAlert(jsonModel, alertModel, subject + "#" + exec, objectString, sts);
+						}
+						lastAccess = curCh;
+
+					}
+
 //						
 //					} else if(eventType.contains("EVENT_MPROTECT")) {
 //						String curPro = subject+exec+objectString+"mprotect";
@@ -271,136 +265,133 @@ public class LogParserFreeBSD {
 //							lastAccess = curPro;
 //						}
 //						
-					}else if(eventType.contains("EVENT_SENDTO")) {
-					
-						String IPAddress = getIpAddress(object, NetworkObject);
-						
-						if(!IPAddress.isEmpty()) {						
-							if(isEntityNew(IPAddress, Network)) {
-								 networkMap = lm.initialNetworkTagMap(IPAddress);
-							}
-							
-							String curSend = subject+exec+IPAddress+"send";
-							if	(!lastAccess.contains(curSend)) {
-								
-								mapper = lm.sendMap(subject,exec,IPAddress,hostId,userId, timestamp) + networkMap+processMap;	
-								
-								storeEntity(IPAddress, Network);
-								storeEntity(subject+"#"+exec, Process);
-								
-								Reader targetReader = new StringReader(mapper);
-								jsonModel.read(targetReader, null, "N-TRIPLE");
-													
-								
-								if(policyrule!="false") {
-									AlertRule alert = new AlertRule();
-									alert.dataLeakAlert(jsonModel,alertModel, subject+"#"+exec, IPAddress, sts);
-								}
-								
-								prop.sendTag(jsonModel, subject, exec, IPAddress, propagation);
-								
-								lastAccess=curSend;
-								
-							}
-							
-						}
-						
-				}else if(eventType.contains("EVENT_RECVFROM")) {
-					
-									
-						String IPAddress = getIpAddress(object, NetworkObject);
-					
-						
-						if(!IPAddress.isEmpty()) {
-							
-							if(isEntityNew(IPAddress, Network)) {
-								networkMap = lm.initialNetworkTagMap(IPAddress);
-							}
-							
-							mapper = lm.receiveMap(subject,exec,IPAddress,hostId,userId, timestamp) + networkMap+processMap;
-								
-								storeEntity(IPAddress, Network);
-								storeEntity(subject+"#"+exec, Process);
-							
-								Reader targetReader = new StringReader(mapper);
-								jsonModel.read(targetReader, null, "N-TRIPLE");
+				} else if (eventType.contains("EVENT_SENDTO")) {
 
-								//every connection is evil, hence update the new time to avoid decay
-								putNewSubjectTime(subject, ts, SubjectTime);
-								
-								if(policyrule!="false") {
-									AlertRule alert = new AlertRule();
-									alert.reconnaissanceAlert(jsonModel,alertModel, subject+"#"+exec, IPAddress, sts);
-								}
-											
-								
-								prop.receiveTag(jsonModel, subject, exec, IPAddress, propagation);
-								
-																						 
+					String IPAddress = getIpAddress(object, NetworkObject);
+
+					if (!IPAddress.isEmpty()) {
+						if (isEntityNew(IPAddress, Network)) {
+							networkMap = lm.initialNetworkTagMap(IPAddress);
 						}
+
+						String curSend = subject + exec + IPAddress + "send";
+						if (!lastAccess.contains(curSend)) {
+
+							mapper = lm.sendMap(subject, exec, IPAddress, hostId, userId, timestamp) + networkMap + processMap;
+
+							storeEntity(IPAddress, Network);
+							storeEntity(subject + "#" + exec, Process);
+
+							Reader targetReader = new StringReader(mapper);
+							jsonModel.read(targetReader, null, "N-TRIPLE");
+
+
+							if (policyrule != "false") {
+								AlertRule alert = new AlertRule();
+								alert.dataLeakAlert(jsonModel, alertModel, subject + "#" + exec, IPAddress, sts);
+							}
+
+							prop.sendTag(jsonModel, subject, exec, IPAddress, propagation);
+
+							lastAccess = curSend;
+
+						}
+
+					}
+
+				} else if (eventType.contains("EVENT_RECVFROM")) {
+
+
+					String IPAddress = getIpAddress(object, NetworkObject);
+
+
+					if (!IPAddress.isEmpty()) {
+
+						if (isEntityNew(IPAddress, Network)) {
+							networkMap = lm.initialNetworkTagMap(IPAddress);
+						}
+
+						mapper = lm.receiveMap(subject, exec, IPAddress, hostId, userId, timestamp) + networkMap + processMap;
+
+						storeEntity(IPAddress, Network);
+						storeEntity(subject + "#" + exec, Process);
+
+						Reader targetReader = new StringReader(mapper);
+						jsonModel.read(targetReader, null, "N-TRIPLE");
+
+						//every connection is evil, hence update the new time to avoid decay
+						putNewSubjectTime(subject, ts, SubjectTime);
+
+						if (policyrule != "false") {
+							AlertRule alert = new AlertRule();
+							alert.reconnaissanceAlert(jsonModel, alertModel, subject + "#" + exec, IPAddress, sts);
+						}
+
+
+						prop.receiveTag(jsonModel, subject, exec, IPAddress, propagation);
+
+
 					}
 				}
-			 
-		}else if(datumNode.get("com.bbn.tc.schema.avro.cdm18.NetFlowObject").toBoolean()) {
-			    networkNode = datumNode.get("com.bbn.tc.schema.avro.cdm18.NetFlowObject");
-				netObject = shortenUUID(networkNode.get("uuid").toString(),uuIndex); 
-				String ip = networkNode.get("remoteAddress").toString();
-				String port =networkNode.get("remotePort").toString();
-				netAddress = ip+":"+port;
-				putNewNetworkObject(netObject, netAddress, NetworkObject);
-				String mapper="";
-				LogMapper lm = new LogMapper();	
-			    
-				mapper = lm.networkMap(netAddress,ip,port);	
-				
-				Reader targetReader = new StringReader(mapper);
-				jsonModel.read(targetReader, null, "N-TRIPLE");
+			}
 
-		}else if(datumNode.get("com.bbn.tc.schema.avro.cdm18.Subject").toBoolean()) {
-		    subjectNode = datumNode.get("com.bbn.tc.schema.avro.cdm18.Subject");
-			subject = shortenUUID(subjectNode.get("uuid").toString(),uuIndex); 
-			String userId = shortenUUID(subjectNode.get("localPrincipal").toString(),uuIndex); 
+		} else if (datumNode.get("com.bbn.tc.schema.avro.cdm18.NetFlowObject").toBoolean()) {
+			networkNode = datumNode.get("com.bbn.tc.schema.avro.cdm18.NetFlowObject");
+			netObject = shortenUUID(networkNode.get("uuid").toString(), uuIndex);
+			String ip = networkNode.get("remoteAddress").toString();
+			String port = networkNode.get("remotePort").toString();
+			netAddress = ip + ":" + port;
+			putNewNetworkObject(netObject, netAddress, NetworkObject);
+			String mapper = "";
+			LogMapper lm = new LogMapper();
+
+			mapper = lm.networkMap(netAddress, ip, port);
+
+			Reader targetReader = new StringReader(mapper);
+			jsonModel.read(targetReader, null, "N-TRIPLE");
+
+		} else if (datumNode.get("com.bbn.tc.schema.avro.cdm18.Subject").toBoolean()) {
+			subjectNode = datumNode.get("com.bbn.tc.schema.avro.cdm18.Subject");
+			subject = shortenUUID(subjectNode.get("uuid").toString(), uuIndex);
+			String userId = shortenUUID(subjectNode.get("localPrincipal").toString(), uuIndex);
 			putNewUserObject(subject, userId, UserObject);
 			long time = subjectNode.get("startTimestampNanos").toLong();
-			if(time!=0) {
+			if (time != 0) {
 				//System.out.println(subject+" : "+time);
 				putNewSubjectTime(subject, time, SubjectTime);
 			}
-			
-			
-		}else if(datumNode.get("com.bbn.tc.schema.avro.cdm18.Principal").toBoolean()) {
-			
-				String mapper="";
-				LogMapper lm = new LogMapper();	
-			    userNode = datumNode.get("com.bbn.tc.schema.avro.cdm18.Principal");
-				userId = shortenUUID(userNode.get("uuid").toString(),uuIndex); 
-				String userType = getUserType(userNode.get("userId").toInt());
-				String userName = userNode.get("username").get("string").toString(); 
-				
-				mapper = lm.userMap(userId,userType,userName);	
-		
-				Reader targetReader = new StringReader(mapper);
-				jsonModel.read(targetReader, null, "N-TRIPLE");
-			
-		
-		}else if(datumNode.get("com.bbn.tc.schema.avro.cdm18.Host").toBoolean()) {
-			String mapper="";
-			LogMapper lm = new LogMapper();	
-		    hostNode = datumNode.get("com.bbn.tc.schema.avro.cdm18.Host");
-			hostId = hostNode.get("uuid").toString(); 
+
+
+		} else if (datumNode.get("com.bbn.tc.schema.avro.cdm18.Principal").toBoolean()) {
+
+			String mapper = "";
+			LogMapper lm = new LogMapper();
+			userNode = datumNode.get("com.bbn.tc.schema.avro.cdm18.Principal");
+			userId = shortenUUID(userNode.get("uuid").toString(), uuIndex);
+			String userType = getUserType(userNode.get("userId").toInt());
+			String userName = userNode.get("username").get("string").toString();
+
+			mapper = lm.userMap(userId, userType, userName);
+
+			Reader targetReader = new StringReader(mapper);
+			jsonModel.read(targetReader, null, "N-TRIPLE");
+
+
+		} else if (datumNode.get("com.bbn.tc.schema.avro.cdm18.Host").toBoolean()) {
+			String mapper = "";
+			LogMapper lm = new LogMapper();
+			hostNode = datumNode.get("com.bbn.tc.schema.avro.cdm18.Host");
+			hostId = hostNode.get("uuid").toString();
 			//String hostType = hostNode.get("hostType").toString();
 			String hostName = hostNode.get("hostName").toString();
 			String hostOS = hostNode.get("osDetails").toString();
 			String hostIP = hostNode.get("interfaces").get(1).get("ipAddresses").get(1).toString();
-			
-			mapper = lm.hostMap(hostId,hostName,hostOS,hostIP);	
+
+			mapper = lm.hostMap(hostId, hostName, hostOS, hostIP);
 			Reader targetReader = new StringReader(mapper);
 			jsonModel.read(targetReader, null, "N-TRIPLE");
-		
-	
-	}				
+		}
 		return lastAccess;
-	
 	}
 	
 	
@@ -609,10 +600,8 @@ public class LogParserFreeBSD {
 	}
 	
   private  static void updateCounter(ArrayList<Integer> counter) {
-		
 		int lastCounter = counter.get(0);
 		counter.remove(0);
 		counter.add(lastCounter+1);
-		 
 	}
 }

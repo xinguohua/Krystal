@@ -66,34 +66,33 @@ public class AlertRule {
 //        currentAlert.close();
 //	    
 //	}
-	
-	
+
+
 	public void reconnaissanceAlert(Model jsonModel, Model alertModel, String proc, String net, String ts) {
-		process = "<http://w3id.org/sepses/resource/proc"+proc+">";
-		net = "<http://w3id.org/sepses/resource/soc#"+net+">";
-		String time = "\""+ts + "\"^^<http://www.w3.org/2001/XMLSchema#long>";
-		
-		String q ="CONSTRUCT { << "+net+" sepses:isReceivedBy "+process+" >> "
-					+ "rule:hasDetectedRule <http://w3id.org/sepses/resource/rule/reconnaissance-rule>; \r\n"
-					+ "rule:alertWeight 0; \r\n"
-					+ "rule:timestamp "+time+";\r\n"
-					+ "rule:alertType \"internal\" .\r\n"
-						+ " \r\n}"+
-				   "WHERE { \r\n" + 
-				     net+" sepses:isReceivedBy "+process+" .\r\n"
-					 + "?f sepses:isReadBy "+process+" .\r\n"+
-					process+ " rule:subjTag  ?sst.\r\n"+
-					"?f rule:confTag  ?oct.\r\n"
-					+"FILTER (?oct < 0.5).\r\n"
-					+"FILTER (?sst >= 0.5).\r\n"
-					+ "\r\n"+
+		process = "<http://w3id.org/sepses/resource/proc" + proc + ">";
+		net = "<http://w3id.org/sepses/resource/soc#" + net + ">";
+		String time = "\"" + ts + "\"^^<http://www.w3.org/2001/XMLSchema#long>";
+
+		String q = "CONSTRUCT { << " + net + " sepses:isReceivedBy " + process + " >> "
+				+ "rule:hasDetectedRule <http://w3id.org/sepses/resource/rule/reconnaissance-rule>; \r\n"
+				+ "rule:alertWeight 0; \r\n"
+				+ "rule:timestamp " + time + ";\r\n"
+				+ "rule:alertType \"internal\" .\r\n"
+				+ " \r\n}" +
+				"WHERE { \r\n" +
+				net + " sepses:isReceivedBy " + process + " .\r\n"
+				+ "?f sepses:isReadBy " + process + " .\r\n" +
+				process + " rule:subjTag  ?sst.\r\n" +
+				"?f rule:confTag  ?oct.\r\n"
+				+ "FILTER (?oct < 0.5).\r\n"
+				+ "FILTER (?sst >= 0.5).\r\n"
+				+ "\r\n" +
 				"}";
-		
-	    QueryExecution qe = QueryExecutionFactory.create(prefix+q, jsonModel);
-        Model currentAlert = qe.execConstruct();
-        alertModel.add(currentAlert);
-        currentAlert.close();
-	    
+
+		QueryExecution qe = QueryExecutionFactory.create(prefix + q, jsonModel);
+		Model currentAlert = qe.execConstruct();
+		alertModel.add(currentAlert);
+		currentAlert.close();
 	}
 	
 
@@ -151,7 +150,6 @@ public class AlertRule {
         Model currentAlert = qe.execConstruct();
         alertModel.add(currentAlert);
         currentAlert.close();
-	    
 	}
 	
 	
@@ -193,8 +191,8 @@ public class AlertRule {
 		String q ="CONSTRUCT { << "+process+" sepses:writes "+file+" >> "
 								+ "rule:hasDetectedRule <http://w3id.org/sepses/resource/rule/corrupt-file-rule>;\r\n"+
 								  "rule:alertWeight 0; \r\n"+
-						  			"sepses:timestamp "+time+";\r\n"+
-						  			 "rule:alertType \"internal\" .\r\n"+
+				                  "sepses:timestamp "+time+";\r\n"+
+				                   "rule:alertType \"internal\" .\r\n"+
 						  			process+" sepses:writes "+file+
 						   " \r\n}"+
 				   "WHERE { \r\n" + 
@@ -209,7 +207,6 @@ public class AlertRule {
 		QueryExecution qe = QueryExecutionFactory.create(prefix+q, jsonModel);
         Model currentAlert = qe.execConstruct();
         alertModel.add(currentAlert);
-	    
 	}
 	
 	public void changePermAlert(Model jsonModel, Model alertModel, String proc, String objectString, String ts) {

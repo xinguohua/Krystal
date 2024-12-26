@@ -34,9 +34,9 @@ public class LogMapper {
 	public  String host;
 	public  String user;
 	public  String time;
-	
-	public LogMapper(){
-	//property 
+
+	public LogMapper() {
+		//property
 		writes = "<http://w3id.org/sepses/vocab/event/log#writes>";
 		hasExe = "<http://w3id.org/sepses/vocab/event/log#hasExe>";
 		originatesFrom = "<http://w3id.org/sepses/vocab/event/log#originatesFrom>";
@@ -55,15 +55,15 @@ public class LogMapper {
 		changePerm = "<http://w3id.org/sepses/vocab/event/log#changesPermission>";
 		mprotect = "<http://w3id.org/sepses/vocab/event/log#mprotect>";
 		a = "<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>";
-	//tag-property
+		//tag-property
 		intTag = "<http://w3id.org/sepses/vocab/rule#intTag>";
 		confTag = "<http://w3id.org/sepses/vocab/rule#confTag>";
 		subjTag = "<http://w3id.org/sepses/vocab/rule#subjTag>";
 		counter = "<http://w3id.org/sepses/vocab/rule#counter>";
-	//tag-value
+		//tag-value
 		highTag = "\"1.0\"^^<http://www.w3.org/2001/XMLSchema#double>";
 		lowTag = "\"0.0\"^^<http://www.w3.org/2001/XMLSchema#double>";
-	//others
+		//others
 		s = " ";
 		dot = ".\r\n";
 	}
@@ -71,10 +71,8 @@ public class LogMapper {
 	public  String writeMap(String subject, String exec, String objectString, String hostId, String userId, String ts) {	
 		process = "<http://w3id.org/sepses/resource/proc"+subject+"#"+exec+">";
 		file = "<http://w3id.org/sepses/resource/file#"+objectString+">";
-		//ts = "\""+ts+"\"^^<http://www.w3.org/2001/XMLSchema#long>";
-		
+
 		return  process +s+ writes +s+ file +dot +
-				//"<< " +process +s+ writes +s+ file +" >> "+timestamp +s+ ts +s+ dot
 				 addTriple(process, exec, hostId, userId);
 		}
 	
@@ -124,21 +122,16 @@ public class LogMapper {
 	}
 	
 	public  String forkMap(String prevProcess, String process, String ts) {
-		
 		String prevProc = "<http://w3id.org/sepses/resource/proc"+prevProcess+">";
 		String proc = "<http://w3id.org/sepses/resource/proc"+process+">";
-		
 		return prevProc +s+ forks +s+ proc +dot;
-				
 	}
 	
 	public  String changePerm(String subject, String exec, String objectString, String hostId, String userId, String ts) {	
 		process = "<http://w3id.org/sepses/resource/proc"+subject+"#"+exec+">";
 		file = "<http://w3id.org/sepses/resource/file#"+objectString+">";
-		//ts = "\""+ts+"\"^^<http://www.w3.org/2001/XMLSchema#long>";
-		
+
 		return  process +s+ changePerm +s+ file +dot +
-				//"<< " +process +s+ writes +s+ file +" >> "+timestamp +s+ ts +s+ dot
 				 addTriple(process, exec, hostId, userId);
 		}
 	
@@ -151,15 +144,14 @@ public class LogMapper {
 				//"<< " +process +s+ writes +s+ file +" >> "+timestamp +s+ ts +s+ dot
 				 addTriple(process, exec, hostId, userId);
 		}
-	
-public  String userMap(String userId, String userType, String userName) {
-		String user = "<http://w3id.org/sepses/resource/user#"+userId+">";
-		String userT = "<http://w3id.org/sepses/vocab/event/log#"+userType+">";
-		userName = "\""+userName+"\"^^<http://www.w3.org/2001/XMLSchema#string>";
-		String username = "<http://w3id.org/sepses/vocab/event/log#userName>";
-		return user +s+ a +s+ userT +s+ dot+
-				user +s+ username +s+ userName +dot;
-		
+
+	public String userMap(String userId, String userType, String userName) {
+		String user = "<http://w3id.org/sepses/resource/user#" + userId + ">";
+		String userT = "<http://w3id.org/sepses/vocab/event/log#" + userType + ">";
+		userName = "\"" + userName + "\"^^<http://www.w3.org/2001/XMLSchema#string>";
+		String userNamePredicate = "<http://w3id.org/sepses/vocab/event/log#userName>";
+		return user + s + a + s + userT + s + dot +
+				user + s + userNamePredicate + s + userName + dot;
 	}
 
 public  String networkMap(String netObject, String ip, String port) {
@@ -173,8 +165,8 @@ public  String networkMap(String netObject, String ip, String port) {
 	
 }
 
-public  String hostMap(String hostObject,String hostName, String hostOS, String ip) {
-	String host = "<http://w3id.org/sepses/resource/host#"+hostObject+">";
+public  String hostMap(String hostId,String hostName, String hostOS, String ip) {
+	String host = "<http://w3id.org/sepses/resource/host#"+hostId+">";
 	String hostip = "<http://w3id.org/sepses/resource/ip#"+ip+">";
 	String hostname = "\""+hostName+"\"^^<http://www.w3.org/2001/XMLSchema#string>";
 	String hostos = "\""+hostOS+"\"^^<http://www.w3.org/2001/XMLSchema#string>";
@@ -184,23 +176,21 @@ public  String hostMap(String hostObject,String hostName, String hostOS, String 
 	return host +s+ hasHostIP +s+ hostip +s+ dot+
 			host +s+ phostname +s+ hostname +dot+
 			host +s+ phostos +s+ hostos +dot;
-	
 }
 
 
 	public  String initialConfFileTagMap(String objectString) {
 		file = "<http://w3id.org/sepses/resource/file#"+objectString+">";
 		String initialFileTagMap = file +s+ intTag +s+ lowTag +dot+
-								   file +s+ confTag +s+ lowTag +dot;         
+								   file +s+ confTag +s+ lowTag +dot;
 		return initialFileTagMap;
 	}
 	
 	public  String initialProcessTagMap(String process) {
 		String proc = "<http://w3id.org/sepses/resource/proc"+process+">";
-		String initialProcessTagMap =  proc +s+ subjTag +s+ highTag +dot+
+        return proc +s+ subjTag +s+ highTag +dot+
 				 						proc +s+ confTag +s+ highTag +dot+
-				 						proc +s+ intTag +s+ highTag +dot;         
-		return initialProcessTagMap;
+				 						proc +s+ intTag +s+ highTag +dot;
 	}
 	public  String initialFileTagMap(String file) {
 		String f = "<http://w3id.org/sepses/resource/file#"+file+">";
@@ -210,9 +200,8 @@ public  String hostMap(String hostObject,String hostName, String hostOS, String 
 	}
 	public  String initialNetworkTagMap(String network) {
 		String n = "<http://w3id.org/sepses/resource/soc#"+network+">";
-		String initialNetworkTagMap = n +s+ confTag +s+ highTag +dot+
-								   n +s+ intTag +s+ lowTag +dot;         
-		return initialNetworkTagMap;
+        return n +s+ confTag +s+ highTag +dot+
+								   n +s+ intTag +s+ lowTag +dot;
 	}
 	
 	private String addTriple(String proc, String exec, String hostId, String userId) {
