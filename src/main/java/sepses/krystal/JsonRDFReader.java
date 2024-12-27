@@ -40,7 +40,7 @@ public class JsonRDFReader {
             lineNumber = Integer.parseInt(l);
         }
         String sparqlEp = se;
-        String namegraph = ng;
+        String nameGraph = ng;
         int startingLine = 1; // 1 means start from the beginning
         if (sl != null) {
             startingLine = Integer.parseInt(sl);
@@ -128,8 +128,8 @@ public class JsonRDFReader {
                             }
                             case "ubuntu14": {
                                 LogParserUbuntu14 lp = new LogParserUbuntu14(line); //freebsd
-
-                                lastAccess = lp.parseJSONtoRDF(jsonModel, alertModel, fieldfilter, confidentialdir, uuIndex, Process, File, Network, NetworkObject, ForkObject, lastEvent, lastAccess, UserObject, SubjectTime, propagation, attenuation, ab, ae, decayrule, period, tb, te, policyrule, signaturerule, counter1, SubjectCmd);
+                                //lastAccess = lp.parseJSONtoRDFWithAlert(jsonModel, alertModel, fieldfilter, confidentialdir, uuIndex, Process, File, Network, NetworkObject, ForkObject, lastEvent, lastAccess, UserObject, SubjectTime, propagation, attenuation, ab, ae, decayrule, period, tb, te, policyrule, signaturerule, counter1, SubjectCmd);
+                                lastAccess = lp.parseJSONtoRDF(jsonModel, fieldfilter, uuIndex, Process, File, Network, NetworkObject, ForkObject, lastAccess, UserObject, counter1, SubjectCmd);
                                 break;
                             }
                             default: {
@@ -171,31 +171,38 @@ public class JsonRDFReader {
             System.out.println("finish processing file: " + filename);
         }
         //end of folder
+        //  Create the Reasoner
         Reasoner reasoner = ReasonerRegistry.getOWLMicroReasoner();
+        //  Bind the Ontology Schema
         reasoner = reasoner.bindSchema(RDFDataMgr.loadModel(ontology));
+        //  Create an Inference Model
         InfModel infModel = ModelFactory.createInfModel(reasoner, jsonModel);
-        // InfModel infModel = ModelFactory.createRDFSModel(RDFDataMgr.loadModel(ontology), jsonModel);
-
-
-        if (!Objects.equals(signaturerule, "false")) {
-            //detect alert from rule dir (i.e. sigma rule)
-            AlertRule.generateAlertFromRuleDir(infModel, alertModel, ruledir);
-        }
 
         System.out.println("number of events :" + counter.get(0));
-        Statistic.countAlarm(alertModel);
-
         if (!Objects.equals(backupfile, "false")) {
-            String rdfFile = Utility.saveToRDF(infModel, outputdir, namegraph);
-            String alertFile = Utility.saveToRDF(alertModel, outputdir, namegraph + "_alert");
-            Utility.exportHDT(rdfFile, outputdir, namegraph);
-            //alert is not included in HDT, as it doesn't support RDF-star yet
+            String rdfFile = Utility.saveToRDF(infModel, outputdir, nameGraph);
+            Utility.exportHDT(rdfFile, outputdir, nameGraph);
             if (!Objects.equals(livestore, "false")) {
-                Utility.storeFileInRepo(triplestore, ontology, sparqlEp, namegraph, "dba", "dba");
-                Utility.storeFileInRepo(triplestore, rdfFile, sparqlEp, namegraph, "dba", "dba");
-                Utility.storeFileInRepo(triplestore, alertFile, sparqlEp, namegraph, "dba", "dba");
+                // Store the inferred RDF data
+                Utility.storeFileInRepo(triplestore, rdfFile, sparqlEp, nameGraph, "dba", "dba");
             }
         }
-    }
 
+        // alert logic
+//        if (!Objects.equals(signaturerule, "false")) {
+//            //detect alert from rule dir (i.e. sigma rule)
+//            AlertRule.generateAlertFromRuleDir(infModel, alertModel, ruledir);
+//        }
+//        Statistic.countAlarm(alertModel);
+//        if (!Objects.equals(backupfile, "false")) {
+//            //   alert is not included in HDT, as it doesn't support RDF-star yet
+//            String alertFile = Utility.saveToRDF(alertModel, outputdir, nameGraph + "_alert");
+//            if (!Objects.equals(livestore, "false")) {
+//                // Store the ontology file
+//                Utility.storeFileInRepo(triplestore, ontology, sparqlEp, nameGraph, "dba", "dba");
+//                // Store the generated alert file
+//                Utility.storeFileInRepo(triplestore, alertFile, sparqlEp, nameGraph, "dba", "dba");
+//            }
+//        }
+    }
 }

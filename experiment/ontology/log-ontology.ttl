@@ -78,9 +78,6 @@
               rdfs:range :IPAddress ;
               rdfs:comment "This property connects a socket with an IPAddress " .
 
-
-
-
 ###  http://w3id.org/sepses/vocab/event/log#hasUser
 :hasUser rdf:type owl:ObjectProperty ;
          rdfs:domain :Process ;

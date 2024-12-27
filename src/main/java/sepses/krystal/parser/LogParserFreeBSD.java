@@ -4,6 +4,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Set;
 import org.apache.jena.rdf.model.Model;
 import com.jsoniter.JsonIterator;
@@ -53,7 +54,6 @@ public class LogParserFreeBSD {
 				hostId = eventNode.get("hostId").toString();
 				long ts = eventNode.get("timestampNanos").toLong();
 				String sts = eventNode.get("timestampNanos").toString();
-				//String strTime = new Timestamp(ts/1000000).toString();
 				String timestamp = eventNode.get("timestampNanos").toString();
 				long stime = getSubjectTime(subject, SubjectTime);
 
@@ -110,7 +110,7 @@ public class LogParserFreeBSD {
 				}
 
 				if (eventType.contains("EVENT_WRITE")) {
-					if (objectString != "" && !objectString.contains("<unknown>")) {
+					if (!Objects.equals(objectString, "") && !objectString.contains("<unknown>")) {
 						String curWrite = subject + exec + objectString + "write";
 						if (!lastAccess.contains(curWrite)) {
 

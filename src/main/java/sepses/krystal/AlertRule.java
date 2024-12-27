@@ -259,17 +259,16 @@ public class AlertRule {
 	}
 
 
-	public static void generateAlertFromRuleDir(Model jsonModel, Model alertModel, String ruledir) {
-		System.out.println("generate alert from sigma rule " + ruledir);
-
+	public static void generateAlertFromRuleDir(Model jsonModel, Model alertModel, String ruleDir) {
+		System.out.println("generate alert from sigma rule " + ruleDir);
 		//get rule-query from ruledir
-		File rulefolder = new File(ruledir);
+		File ruleFolder = new File(ruleDir);
 		Model ruleModel = ModelFactory.createDefaultModel();
-		ArrayList<String> listFiles = Utility.listFilesForFolder(rulefolder);
+		ArrayList<String> listFiles = Utility.listFilesForFolder(ruleFolder);
 		Collections.sort(listFiles);
 		for (String listFile : listFiles) {
-			Model temprule = RDFDataMgr.loadModel(ruledir + listFile);
-			ruleModel.add(temprule);
+			Model tempRule = RDFDataMgr.loadModel(ruleDir + listFile);
+			ruleModel.add(tempRule);
 		}
 
 		Property hasDetection = ruleModel.createProperty("http://w3id.org/sepses/vocab/rule/sigma#hasDetection");
@@ -279,7 +278,7 @@ public class AlertRule {
 			Statement s = iter.next();
 			Resource subj = s.getSubject();
 			String ruleQuery = s.getObject().asLiteral().toString().replace("\\\"", "\"");
-			if (ruledir.contains("rule_win")) {
+			if (ruleDir.contains("rule_win")) {
 				ruleQuery = ruleQuery.replace("\\\\", "\\\\\\\\");
 			}
 
@@ -298,7 +297,5 @@ public class AlertRule {
 				}
 			}
 		}
-
-
 	}
 }

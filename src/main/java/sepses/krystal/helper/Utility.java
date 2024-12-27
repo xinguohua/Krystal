@@ -48,7 +48,6 @@ public class Utility {
     	String outputFileName = outputDir + fileName;
         File outputFile = new File(outputFileName);
         outputFile.getParentFile().mkdirs();
-
         try {
             FileWriter out = new FileWriter(outputFile);
             model.write(out, "TURTLE");
@@ -56,7 +55,6 @@ public class Utility {
         } catch (IOException e) {
             log.error(e.getMessage(), e);
         }
-
         return outputFileName;
     }
 
@@ -79,20 +77,16 @@ public class Utility {
 	    return input;
 
 	}
+
 	public static void generateHDTFile(String baseURI, String filename, String inputType, String outputFile) throws IOException, ParserException {
 		//generate file name based on the original input file name
-	
-			HDT hdt = HDTManager.generateHDT(filename, baseURI, RDFNotation.parse(inputType), new HDTSpecification(), null);
-			
-			// Add additional domain-specific properties to the header:
-			Header header = hdt.getHeader();
-			header.insert("myResource1", "property" , "value");
-			
-			// Save generated HDT to a file
-			hdt.saveToHDT(outputFile, null);
-		
-		
-		}
+		HDT hdt = HDTManager.generateHDT(filename, baseURI, RDFNotation.parse(inputType), new HDTSpecification(), null);
+		// Add additional domain-specific properties to the header:
+		Header header = hdt.getHeader();
+		header.insert("myResource1", "property", "value");
+		// Save generated HDT to a file
+		hdt.saveToHDT(outputFile, null);
+	}
 	
 	public static Model loadHDTToJenaModel(String HDTFile) throws IOException{
 		// Load HDT file using the hdt-java library
@@ -111,12 +105,10 @@ public class Utility {
 	
 	public static String getOriginalFileName(String filename){
 	   	String fileName = filename.substring(filename.lastIndexOf("/") + 1);
-        if (fileName.indexOf("\\") >= 0) {
+        if (fileName.contains("\\")) {
             fileName = filename.substring(filename.lastIndexOf("\\") + 1);
         }
-        
         return fileName;
-        
 	}
 
 	public static void copyFileUsingStream(String sourceFile, String destFile) throws IOException {
@@ -153,50 +145,43 @@ public class Utility {
         //return result.getModel();
         return result;
     }*/
-    
-    public static ArrayList<String> listFilesForFolder(final File folder) {
-    	ArrayList<String> rulefiles = new ArrayList<String>();
-    	
-        for (final File fileEntry : folder.listFiles()) {
-            if (fileEntry.isDirectory()) {
-                listFilesForFolder(fileEntry);
-            } else {
-            	rulefiles.add(fileEntry.getName());
-                // System.out.println(fileEntry.getName());
-            }
-        }
-        
-        return rulefiles;
-    }
-    
-	  public static void storeFileInRepo(String triplestore, String fileLocation, String sparqlEndpoint, String namegraph, String user, String pass) {
-			 
-		  Storage storage = null;
-		 if(triplestore.equals("graphdb")){
-			  storage = GraphDBStorage.getInstance();
-		 }
-		 
-		   System.out.print("Store "+fileLocation+" to [" +triplestore+"] via "+sparqlEndpoint + " using namegraph " + namegraph+" ...");
-		  // System.out.print("Store data to "+triplestore+" ...");
-	       storage.storeData(fileLocation, sparqlEndpoint, namegraph, true, user, pass);
-	       System.out.println(" Done!");
-	  }
-		public static String saveToRDF(Model model, String outputdir, String namegraph) throws Exception {
-			System.out.print("Save model to rdf file...");
-			String filename = Utility.getOriginalFileName(namegraph)+"_output.ttl";
-			String rdfFile = Utility.saveToFile(model,outputdir,filename);
-			System.out.println(outputdir+filename+" Done!");
-			return rdfFile;
+
+	public static ArrayList<String> listFilesForFolder(final File folder) {
+		ArrayList<String> rulefiles = new ArrayList<String>();
+		for (final File fileEntry : folder.listFiles()) {
+			if (fileEntry.isDirectory()) {
+				listFilesForFolder(fileEntry);
+			} else {
+				rulefiles.add(fileEntry.getName());
+				// System.out.println(fileEntry.getName());
+			}
 		}
+		return rulefiles;
+	}
 
-		
-		
-		public static String exportHDT(String rdffile, String outputdir, String namegraph) throws Exception {
-				System.out.print("Save model rdf to hdt....");
-				String outputModelHDT = outputdir+Utility.getOriginalFileName(namegraph)+"_output.hdt";
-				Utility.generateHDTFile(namegraph, rdffile, "TURTLE", outputModelHDT);
-				System.out.println(outputdir+outputModelHDT+" Done!");
-			    return outputModelHDT;
-	   }
+	public static void storeFileInRepo(String triplestore, String fileLocation, String sparqlEndpoint, String nameGraph, String user, String pass) {
+		Storage storage = null;
+		if (triplestore.equals("graphdb")) {
+			storage = GraphDBStorage.getInstance();
+		}
+		System.out.print("Store " + fileLocation + " to [" + triplestore + "] via " + sparqlEndpoint + " using nameGraph " + nameGraph + " ...");
+		storage.storeData(fileLocation, sparqlEndpoint, nameGraph, true, user, pass);
+		System.out.println(" Done!");
+	}
 
+	public static String saveToRDF(Model model, String outputDir, String nameGraph) {
+		System.out.print("Save model to rdf file...");
+		String filename = Utility.getOriginalFileName(nameGraph) + "_output.ttl";
+		String rdfFile = Utility.saveToFile(model, outputDir, filename);
+		System.out.println(outputDir + filename + " Done!");
+		return rdfFile;
+	}
+
+	public static String exportHDT(String rdffile, String outputdir, String namegraph) throws Exception {
+		System.out.print("Save model rdf to hdt....");
+		String outputModelHDT = outputdir + Utility.getOriginalFileName(namegraph) + "_output.hdt";
+		Utility.generateHDTFile(namegraph, rdffile, "TURTLE", outputModelHDT);
+		System.out.println(outputdir + outputModelHDT + " Done!");
+		return outputModelHDT;
+	}
 }
