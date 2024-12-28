@@ -21,11 +21,7 @@ import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.tdb.TDBFactory;
 
 import sepses.krystal.helper.Utility;
-import sepses.krystal.parser.LogParserFreeBSD;
-import sepses.krystal.parser.LogParserLinux20;
-import sepses.krystal.parser.LogParserUbuntu12;
-import sepses.krystal.parser.LogParserUbuntu14;
-import sepses.krystal.parser.LogParserWin;
+import sepses.krystal.parser.*;
 
 public class JsonRDFReader {
 
@@ -127,8 +123,9 @@ public class JsonRDFReader {
                                 break;
                             }
                             case "ubuntu14": {
-                                LogParserUbuntu14 lp = new LogParserUbuntu14(line); //freebsd
-                                //lastAccess = lp.parseJSONtoRDFWithAlert(jsonModel, alertModel, fieldfilter, confidentialdir, uuIndex, Process, File, Network, NetworkObject, ForkObject, lastEvent, lastAccess, UserObject, SubjectTime, propagation, attenuation, ab, ae, decayrule, period, tb, te, policyrule, signaturerule, counter1, SubjectCmd);
+//                                LogParserUbuntu14 lp = new LogParserUbuntu14(line); //freebsd
+//                                lastAccess = lp.parseJSONtoRDFWithAlert(jsonModel, alertModel, fieldfilter, confidentialdir, uuIndex, Process, File, Network, NetworkObject, ForkObject, lastEvent, lastAccess, UserObject, SubjectTime, propagation, attenuation, ab, ae, decayrule, period, tb, te, policyrule, signaturerule, counter1, SubjectCmd);
+                                LogParserUbuntuNew14 lp = new LogParserUbuntuNew14(line); //freebsd
                                 lastAccess = lp.parseJSONtoRDF(jsonModel, fieldfilter, uuIndex, Process, File, Network, NetworkObject, ForkObject, lastAccess, UserObject, counter1, SubjectCmd);
                                 break;
                             }

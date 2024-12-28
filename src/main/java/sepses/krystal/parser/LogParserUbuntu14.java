@@ -357,12 +357,10 @@ public class LogParserUbuntu14 {
                 //is it forked by another previous process?
                 prevProcess = getPreviousForkProcess(subjectId, subjectToProcess);
                 //if yes create fork Event
-                if (!prevProcess.isEmpty()) {
-                    if (!eventType.contains("EVENT_EXECUTE")) {
-                        forkEventWithoutTag(lm, prevProcess, subjectId + "#" + exec, timestamp, jsonModel);
-                    }
+                if (!prevProcess.isEmpty() && !eventType.contains("EVENT_EXECUTE")) {
+                    forkEventWithoutTag(lm, prevProcess, subjectId + "#" + exec, timestamp, jsonModel);
                 }
-            }
+        }
 
             if (eventType.contains("EVENT_WRITE")) {
                 lastAccess = handleWriteEvent(
@@ -374,7 +372,7 @@ public class LogParserUbuntu14 {
                 );
             } else if (eventType.contains("EVENT_EXECUTE")) {
                 lastAccess = handleExecuteEvent(
-                        subjectId, exec, hostId, userId, timestamp, lastAccess, jsonModel, processSet, fileSet, subjectToProcess
+                        subjectId, exec, hostId, userId, timestamp, lastAccess, prevProcess, jsonModel, processSet, fileSet, subjectToProcess
                 );
             } else if (eventType.contains("EVENT_FORK")) {
                 handleForkEvent(subjectId, exec, objectUUID, processSet, subjectToProcess);
@@ -476,8 +474,8 @@ public class LogParserUbuntu14 {
 
 
     private String handleExecuteEvent(String subjectId, String exec, String hostId, String userId,
-                                      String timestamp, String lastAccess, Model jsonModel,
-                                      Set<String> processSet, Set<String> fileSet,
+                                      String timestamp, String lastAccess, String prevProcess,
+                                      Model jsonModel, Set<String> processSet, Set<String> fileSet,
                                       HashMap<String, String> subjectToProcess) {
         // 获取命令行信息并清理
         String cmdline = eventNode.get("properties").get("map").get("cmdLine").toString();
@@ -490,7 +488,10 @@ public class LogParserUbuntu14 {
         }
 
         // 检查前一个进程（如果存在）
-        String prevProcess = subjectToProcess.computeIfAbsent(subjectId + "#" + exec, key -> subjectId);
+        if (prevProcess.isEmpty()) {
+            putNewForkObject(subjectId + "#" + exec, subjectId, subjectToProcess);
+            prevProcess = getPreviousForkProcess(subjectId, subjectToProcess);
+        }
 
         // 生成并写入 RDF 映射
         LogMapper lm = new LogMapper();
